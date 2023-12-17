@@ -6,7 +6,7 @@
 /*   By: oumondad <oumondad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 15:39:49 by oumondad          #+#    #+#             */
-/*   Updated: 2023/12/16 20:41:47 by oumondad         ###   ########.fr       */
+/*   Updated: 2023/12/17 14:28:58 by oumondad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*after_new_line(char *stack)
 		if (!tmp)
 			return (free(stack), (NULL));
 		j = -1;
-		ft_mossa3ada(stack, tmp, i);
+		ft_help(stack, tmp, i);
 		return (free(stack), tmp);
 	}
 	return (free(stack), (NULL));

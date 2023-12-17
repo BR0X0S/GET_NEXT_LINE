@@ -6,7 +6,7 @@
 /*   By: oumondad <oumondad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 15:40:01 by oumondad          #+#    #+#             */
-/*   Updated: 2023/12/16 19:56:55 by oumondad         ###   ########.fr       */
+/*   Updated: 2023/12/17 14:29:45 by oumondad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ char	*ft_strjoin(char *stack, char *buffer)
 	return (free(stack), free(buffer), str);
 }
 
-void ft_mossa3ada(char *stack, char *tmp, int i)
+void	ft_help(char *stack, char *tmp, int i)
 {
 	size_t	j;
-	
+
 	j = -1;
 	while (stack[i + (++j)])
 		tmp[j] = stack[i + j];
