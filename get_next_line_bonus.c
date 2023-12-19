@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oumondad <oumondad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/10 15:39:49 by oumondad          #+#    #+#             */
-/*   Updated: 2023/12/19 20:23:13 by oumondad         ###   ########.fr       */
+/*   Created: 2023/12/17 15:02:11 by oumondad          #+#    #+#             */
+/*   Updated: 2023/12/19 20:26:01 by oumondad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-char	*get_new_line(char *stack, int fd)
+char	*ft_get_new_line(char *stack, int fd)
 {
-	int		i;
 	char	*buffer;
+	int		byte_read;
 
 	while (ft_strchr(stack, '\n') != 1)
 	{
-		buffer = malloc ((size_t)BUFFER_SIZE + 1);
+		buffer = malloc (BUFFER_SIZE + 1);
 		if (!buffer)
 			return (free(stack), NULL);
-		i = read (fd, buffer, BUFFER_SIZE);
-		if (i <= 0)
+		byte_read = read (fd, buffer, BUFFER_SIZE);
+		if (byte_read <= 0)
 		{
-			stack = ft_check(i, buffer, stack);
+			stack = ft_check(stack, buffer, byte_read);
 			break ;
 		}
-		buffer[i] = '\0';
+		buffer[byte_read] = '\0';
 		stack = ft_strjoin(stack, buffer);
 		if (!stack)
 			return (NULL);
@@ -62,43 +62,45 @@ char	*ft_get_line(char *stack)
 	return (line);
 }
 
-char	*after_new_line(char *stack)
+char	*ft_get_after_line(char *stack)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 	char	*tmp;
 
 	i = 0;
 	j = 0;
-	while (stack[i] != '\n' && stack[i] != '\0')
+	if (!stack)
+		return (NULL);
+	while (stack[i] != '\0' && stack[i] != '\n')
 		i++;
 	if (stack[i] == '\0')
-		return (free (stack), (NULL));
+		return (free(stack), NULL);
 	if (stack[i + 1] != '\0')
 	{
 		i++;
-		while (stack[i + j])
+		while (stack[i + j] != '\0')
 			j++;
-		tmp = malloc(j + 1);
+		tmp = malloc (j + 1);
 		if (!tmp)
 			return (free(stack), NULL);
 		ft_help(stack, tmp, i);
-		return (free(stack), tmp);
+		return (free (stack), tmp);
 	}
-	return (free(stack), (NULL));
+	return (free (stack), NULL);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*stack;
+	static char	*stack[OPEN_MAX];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX)
 		return (NULL);
-	stack = get_new_line(stack, fd);
-	if (!stack)
-		return (free(stack), NULL);
-	line = ft_get_line(stack);
-	stack = after_new_line(stack);
+	stack[fd] = ft_get_new_line (stack[fd], fd);
+	if (!stack[fd])
+		return (free(stack[fd]), NULL);
+	line = ft_get_line (stack[fd]);
+	stack[fd] = ft_get_after_line (stack[fd]);
 	return (line);
 }
